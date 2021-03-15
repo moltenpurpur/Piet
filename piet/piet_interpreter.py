@@ -8,11 +8,10 @@ from typing import *
 class PietInterpreter:
 
     def __init__(self, pixels: Pixels):
-        self.stack: List[int] = []
         self.dp = DirectionPointer()
         self.cc = CodelChooser()
         self.pixels = pixels
-        self.commands = Commands(self.dp, self.cc, self.stack)
+        self.commands = Commands(self.dp, self.cc)
         self.current_pos = Point(0, 0)
 
     def get_blocks(self) -> List:
@@ -66,17 +65,14 @@ class PietInterpreter:
                      self.pixels[self.current_pos].color
         if color_step < 0:
             color_step = 6 + color_step
+
         ton_step = self.pixels[next_block].tone - self.pixels[
             self.current_pos].tone
         if ton_step < 0:
             ton_step = 3 + ton_step
+
         command = self.commands.commands_table[color_step][ton_step]
-        # print('command name:  ' + command.__name__ +
-        #      '    value: ' + str(blocks_count))
-        # print(self.commands.stack)
         command(blocks_count)
-        # print(self.commands.stack)
-        # print()
 
     def start(self):
         k = 0

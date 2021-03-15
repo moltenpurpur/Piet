@@ -12,7 +12,7 @@ class Pixel:
     def __eq__(self, other):
         return self.color == other.color and self.tone == other.tone
 
-    colors = {(255, 192, 192): (Color.red, Tone.light),
+    colors = {(255, 192, 192): (Tone.light, Color.red),
               (255, 255, 192): (Tone.light, Color.yellow),
               (192, 255, 192): (Tone.light, Color.green),
               (192, 255, 255): (Tone.light, Color.cyan),
@@ -34,7 +34,7 @@ class Pixel:
               (0, 0, 0): (Tone.normal, Color.black)}
 
     @classmethod
-    def pixel_frog_rgb(cls, rgb: Tuple[int, int, int]):
+    def pixel_frog_rgb(cls, rgb: Tuple):
         if len(rgb) == 4:
             rgb = rgb[:-1]
         if rgb in cls.colors.keys():

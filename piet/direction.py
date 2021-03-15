@@ -28,8 +28,7 @@ class DirectionPointer:
     def __init__(self):
         self.direction_pointer: Direction = Direction.right
 
-    def turn_direction_pointer(self,
-                               step: int = 1):
+    def turn_direction_pointer(self, step: int = 1):
         directions_count = 4
         self.direction_pointer = \
             (self.direction_pointer + step) % directions_count

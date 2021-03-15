@@ -4,23 +4,19 @@ from piet.commands_exceptions import CommandsExceptions
 
 
 class Commands:
-    def __init__(self, dp, cc, stack):
+    def __init__(self, dp, cc):
         self.dp: DirectionPointer = DirectionPointer()
         self.cc: CodelChooser = CodelChooser()
         self.stack: List[int] = []
-        self.codels_count: int = 0
 
         self.commands_table = [
-            [self.p, self.push, self.pop],
+            [None, self.push, self.pop],
             [self.add, self.subtract, self.multiply],
             [self.divide, self.mod, self.not_command],
             [self.greater, self.pointer, self.switch],
             [self.duplicate, self.roll, self.in_number],
             [self.in_char, self.out_number, self.out_char]
         ]
-
-    def p(self, val):
-        print("fff")
 
     def push(self,
              val):  # Помещает значение только что покинутого цветного блока в стек.
@@ -102,8 +98,7 @@ class Commands:
         self.stack.append(ord(input()[0]))
 
     def out_number(self, val):  # выводит число
-        print('out_num:' + str(self.stack.pop()))
-        print()
+        print(str(self.stack.pop()), end='')
 
     def out_char(self, val):  # выводит символ.
         print(chr(self.stack.pop()), end='')
