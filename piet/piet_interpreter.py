@@ -39,11 +39,11 @@ class PietInterpreter:
                 if len(dp_points) == 0 or block.x == dp_points[-1].x:
                     dp_points.append(block)
             dp_points.sort(key=lambda point: point.y)
+
         else:
             blocks.sort(key=lambda point: point.y)
             if self.dp.direction_pointer == Direction.down:
                 blocks.reverse()
-
             for block in blocks:
                 if len(dp_points) == 0 or block.y == dp_points[-1].y:
                     dp_points.append(block)
@@ -54,6 +54,7 @@ class PietInterpreter:
                 return dp_points[-1]
             else:
                 return dp_points[0]
+
         else:
             if self.cc.codel_chooser == Direction.left:
                 return dp_points[-1]
@@ -66,55 +67,55 @@ class PietInterpreter:
         if color_step < 0:
             color_step = 6 + color_step
 
-        ton_step = self.pixels[next_block].tone - self.pixels[
-            self.current_pos].tone
-        if ton_step < 0:
-            ton_step = 3 + ton_step
+        tone_step = self.pixels[next_block].tone - \
+                    self.pixels[self.current_pos].tone
+        if tone_step < 0:
+            ton_step = 3 + tone_step
 
-        command = self.commands.commands_table[color_step][ton_step]
+        command = self.commands.commands_table[color_step][tone_step]
         command(blocks_count)
 
     def start(self):
-        k = 0
+        turn_number = 0
         blocks = list()
-        while k < 8:
-            if k == 0:
+        while turn_number < 8:
+            if turn_number == 0:
                 blocks = self.get_blocks()
             next_block = self.chose_next_block(
                 blocks)
 
             next_block = next_block + self.dp.get_direction()
-            if not self.pixels.is_point_inside(next_block) or self.pixels[
-                next_block].color == Color.black:
-                if k % 2 != 0:
+            if not self.pixels.is_point_inside(next_block) \
+                    or self.pixels[next_block].color == Color.black:
+                if turn_number % 2 != 0:
                     self.dp.turn_direction_pointer()
                 else:
                     self.cc.turn_codel_chooser()
-                k += 1
+                turn_number += 1
             elif self.pixels[next_block].color not in [Color.black,
                                                        Color.white]:
                 self.execute_command(next_block, len(blocks))
                 self.current_pos = next_block
-                k = 0
+                turn_number = 0
             else:
                 if self.pass_white(next_block):
                     break
                 else:
-                    k = 0
+                    turn_number = 0
 
     def pass_white(self, next_block):
         visited: Set[Tuple[Point, Direction]] = set()
         visited.add((next_block, self.dp.direction_pointer))
         while True:
-            t_next_block = next_block + self.dp.get_direction()
-            if (t_next_block, self.dp.direction_pointer) in visited:
+            new_next_block = next_block + self.dp.get_direction()
+            if (new_next_block, self.dp.direction_pointer) in visited:
                 return True
-            if not self.pixels.is_point_inside(t_next_block) or \
-                    self.pixels[t_next_block].color == Color.black:
+            if not self.pixels.is_point_inside(new_next_block) \
+                    or self.pixels[new_next_block].color == Color.black:
                 self.dp.turn_direction_pointer()
-            elif self.pixels[t_next_block].color != Color.white:
-                self.current_pos = t_next_block
+            elif self.pixels[new_next_block].color != Color.white:
+                self.current_pos = new_next_block
                 return False
             else:
-                visited.add((t_next_block, self.dp.direction_pointer))
-                next_block = t_next_block
+                visited.add((new_next_block, self.dp.direction_pointer))
+                next_block = new_next_block

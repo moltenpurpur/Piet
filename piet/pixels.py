@@ -51,13 +51,13 @@ class Pixels:
     def pixels_from_picture(cls, picture_path: str, size=1):
         picture = []
         with Image.open(picture_path) as pic:
-            im = pic.convert('RGB')
+            image = pic.convert('RGB')
             for i in range(pic.size[1] // size):
                 row = []
                 for j in range(pic.size[0] // size):
                     row.append(
                         Pixel.pixel_frog_rgb(
-                            im.getpixel((j * size, i * size))))
+                            image.getpixel((j * size, i * size))))
                 picture.append(row)
 
         return cls(picture)
