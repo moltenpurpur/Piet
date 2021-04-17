@@ -1,6 +1,5 @@
-from piet.pixels import Pixels, Pixel
+from piet.pixels import Pixels
 import argparse
-from piet.colors import Color, Tone
 from piet.piet_interpreter import PietInterpreter
 
 

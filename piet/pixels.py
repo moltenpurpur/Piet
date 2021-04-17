@@ -34,7 +34,7 @@ class Pixel:
               (0, 0, 0): (Tone.normal, Color.black)}
 
     @classmethod
-    def pixel_frog_rgb(cls, rgb: Tuple):
+    def pixel_from_rgb(cls, rgb: Tuple):
         if len(rgb) == 4:
             rgb = rgb[:-1]
         if rgb in cls.colors.keys():
@@ -47,23 +47,23 @@ class Pixels:
     def __init__(self, pixels: List[List[Pixel]]):
         self.pixels = pixels
 
+    def __getitem__(self, item: Point):
+        return self.pixels[item.y][item.x]
+
     @classmethod
-    def pixels_from_picture(cls, picture_path: str, size=1):
+    def pixels_from_picture(cls, picture_path: str, size_codel=1):
         picture = []
-        with Image.open(picture_path) as pic:
-            image = pic.convert('RGB')
-            for i in range(pic.size[1] // size):
+        with Image.open(picture_path) as pict:
+            image = pict.convert('RGB')
+            for i in range(pict.size[1] // size_codel):
                 row = []
-                for j in range(pic.size[0] // size):
+                for j in range(pict.size[0] // size_codel):
                     row.append(
-                        Pixel.pixel_frog_rgb(
-                            image.getpixel((j * size, i * size))))
+                        Pixel.pixel_from_rgb(
+                            image.getpixel((j * size_codel, i * size_codel))))
                 picture.append(row)
 
         return cls(picture)
-
-    def __getitem__(self, item: Point):
-        return self.pixels[item.y][item.x]
 
     def is_point_inside(self, point: Point):
         return 0 <= point.y < len(self.pixels) \

@@ -1,7 +1,7 @@
 from piet.pixels import Pixels
 from piet.direction import DirectionPointer, CodelChooser, Direction, Point
 from piet.commands import Commands
-from piet.colors import Color, Tone
+from piet.colors import Color
 from typing import *
 
 
@@ -18,10 +18,8 @@ class PietInterpreter:
         stack: List[Point] = list()
         visited: Set[Point] = set()
         stack.append(self.current_pos)
-        count = 0
         while len(stack) != 0:
             current = stack.pop()
-            count += 1
             visited.add(current)
             for neighbor in self.pixels.find_neighbours(current):
                 if neighbor not in visited:
@@ -70,7 +68,7 @@ class PietInterpreter:
         tone_step = self.pixels[next_block].tone - \
                     self.pixels[self.current_pos].tone
         if tone_step < 0:
-            ton_step = 3 + tone_step
+            tone_step = 3 + tone_step
 
         command = self.commands.commands_table[color_step][tone_step]
         command(blocks_count)
@@ -81,8 +79,7 @@ class PietInterpreter:
         while turn_number < 8:
             if turn_number == 0:
                 blocks = self.get_blocks()
-            next_block = self.chose_next_block(
-                blocks)
+            next_block = self.chose_next_block(blocks)
 
             next_block = next_block + self.dp.get_direction()
             if not self.pixels.is_point_inside(next_block) \
