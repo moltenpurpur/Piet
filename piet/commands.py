@@ -21,26 +21,33 @@ class Commands:
         self.stack.append(val)
 
     def pop(self, val):  # Извлекает верхнее значение из стека, удаляя его.
+        if len(self.stack) == 0:
+            return
         self.stack.pop()
 
     def add(self, val):  # Извлекает два верхних значения из стека, складывает их и помещает результат обратно в стек.
-        self.stack.append(
-            self.stack.pop() + self.stack.pop())
+        if len(self.stack) < 2:
+            return
+        self.stack.append(self.stack.pop() + self.stack.pop())
 
     def subtract(self, val):  # Извлекает два верхних значения из стека, вычитает верхнее значение из второго, и помещает результат обратно в стек.
-        if len(self.stack) < 2 or self.stack[-2] < 0:
+        if len(self.stack) < 2:
             return
         v1 = self.stack.pop()
         v2 = self.stack.pop()
         self.stack.append(v2 - v1)
 
     def multiply(self, val):  # Извлекает два верхних значения из стека, умножает их и помещает результат обратно в стек.
-        self.stack.append(
-            self.stack.pop() * self.stack.pop())
+        if len(self.stack) < 2:
+            return
+        self.stack.append(self.stack.pop() * self.stack.pop())
 
     def divide(self, val):  # Извлекает два верхних значения из стека, вычисляет целочисленное деление второго значения на верхнее и помещает результат обратно в стек.
-        self.stack.append(
-            self.stack.pop(len(self.stack) - 2) // self.stack.pop())
+        if len(self.stack) < 2:
+            return
+        v1 = self.stack.pop()
+        v2 = self.stack.pop()
+        self.stack.append(v2 // v1)
 
     def mod(self, val):  # Извлекает два верхних значения из стека, находит остаток от деления второго числа на первое и помещает результат обратно в стек.
         self.stack.append(
