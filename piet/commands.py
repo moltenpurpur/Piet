@@ -50,10 +50,15 @@ class Commands:
         self.stack.append(v2 // v1)
 
     def mod(self, val):  # Извлекает два верхних значения из стека, находит остаток от деления второго числа на первое и помещает результат обратно в стек.
-        self.stack.append(
-            self.stack.pop(len(self.stack) - 2) % self.stack.pop())
+        if len(self.stack) < 2:
+            return
+        v1 = self.stack.pop()
+        v2 = self.stack.pop()
+        self.stack.append(v2 % v1)
 
     def not_command(self, val):  # Заменяет стековое значение на ноль, если оно ненулевое, и на 1, если оно нулевое.
+        if len(self.stack) == 0:
+            return
         element = self.stack.pop()
         if element == 0:
             self.stack.append(1)
@@ -61,23 +66,31 @@ class Commands:
             self.stack.append(0)
 
     def greater(self, val):  # Извлекает два значения и помещает 1, если второе значение больше первого, 0 - если не больше.
+        if len(self.stack) < 2:
+            return
         if self.stack.pop() < self.stack.pop():
             self.stack.append(1)
         else:
             self.stack.append(0)
 
     def pointer(self, val):  # Извлекает значение и поворачивает по часовой стрелке DP на данное число, против часовой стрелки, если число отрицательное.
+        if len(self.stack) == 0:
+            return
         self.dp.turn_direction_pointer(self.stack.pop())
 
     def switch(self, val):  # Переключает CC требуемое число раз
+        if len(self.stack) == 0:
+            return
         self.cc.turn_codel_chooser(self.stack.pop())
 
     def duplicate(self, val):  # Помещает копию верхнего значения стека в стек
+        if len(self.stack) == 0:
+            return
         element = self.stack[-1]
         self.stack.append(element)
 
     def roll(self, val):  # Извлекает два значения из стека (n — верхнее, m — второе) и помещает верхнее значение стека на глубину m n раз.
-        if len(self.stack) < 2 or self.stack[-2] < 0:
+        if len(self.stack) < 2:
             return
         n = self.stack.pop()
         m = self.stack.pop()

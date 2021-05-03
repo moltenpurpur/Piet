@@ -132,6 +132,74 @@ class TestCommands(unittest.TestCase):
         comm.divide('val')
         self.assertEqual(comm.stack, [-3])
 
+    def test_mod(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.stack.append(6)
+        comm.stack.append(3)
+        comm.mod('val')
+        self.assertEqual(comm.stack, [0])
+
+    def test_mod_empty_stack(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.stack.append(5)
+        first_stack = comm.stack
+        comm.mod('val')
+        self.assertEqual(comm.stack, first_stack)
+
+    def test_mod_negative_meaning(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.stack.append(-6)
+        comm.stack.append(4)
+        comm.mod('val')
+        self.assertEqual(comm.stack, [2])
+
+    def test_not_command(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.stack.append(0)
+        comm.not_command('val')
+        self.assertEqual(comm.stack, [1])
+
+    def test_not_command_empty_stack(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.not_command('val')
+        self.assertEqual(comm.stack, [])
+
+    def test_not_command_another_number(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.stack.append(56)
+        comm.not_command('val')
+        self.assertEqual(comm.stack, [0])
+
+    def test_greater(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.stack.append(4)
+        comm.stack.append(8)
+        comm.greater('val')
+        self.assertEqual(comm.stack, [0])
+
+    def test_greater_empty_stack(self):
+        dp = direction.DirectionPointer()
+        cc = direction.CodelChooser()
+        comm = commands.Commands(dp, cc)
+        comm.greater('val')
+        self.assertEqual(comm.stack, [])
+
+
+
 
 class TestDP(unittest.TestCase):
     def test_something(self):
